@@ -22,8 +22,8 @@ const blogSchema = new mongoose.Schema({
         default: Date.now()
     },
     state: {
-        type: Buffer,
-        data: ["draft","published"],
+        type: String,
+        enum: ["draft","published"],
         default: "draft"
     },
     readCount: Number,

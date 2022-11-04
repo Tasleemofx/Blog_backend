@@ -32,19 +32,19 @@ router.post("/login",(req,response)=>{
     .then(res=>{
         bcrypt.compare(password, res.password)
         .then(result=>{
-            response.status(200).send("User successfully logged in!!")
+            jwt.sign({ payload: res }, process.env.SECRET, {expiresIn: '1h'}, (err, token)=>{
+               console.log(token)
+            })
+            response.status(200).send(`User successfully logged in!!`)
         })
         .catch(err=>
             response.status(500).send("Failed to login"))
     .catch(err=>{
-        response.status(401).send(err)
+        response.status(404).send("User not found")
     })
     })
 })
 
-// router.post("/login",(req,res)=>{
-
-// })
 
 
 module.exports = router
