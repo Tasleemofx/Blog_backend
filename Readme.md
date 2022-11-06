@@ -190,9 +190,9 @@ Success
 
 ### Edit a single Blog
 
--Route: /api/blog/:id/"
--Method: PATCH
--Header 
+- Route: /api/blog/:id/"
+- Method: PATCH
+- Header 
     -Authorization: Bearer {token}
 - Responses
 
