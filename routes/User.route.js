@@ -21,19 +21,21 @@ router.post("/signup",async (req,res)=>{
         const user = new User({...newuser})
         user.save()
         .then( result=>
-        res.status(200).json("new user successfully created"))
+        res.status(201).json("new user successfully created"))
         .catch(err=> res.status(500).json(err))
     }
 })
 
-router.post("/login",(req,response)=>{
+router.post("/login",async (req,response)=>{
     const {email,password } = req.body
     User.findOne({email})
     .then(res=>{
         bcrypt.compare(password, res.password)
         .then(result=>{
+            if(!result) return response.status(403).send("Incorrect Password")
             jwt.sign({ payload: res }, process.env.SECRET, {expiresIn: '1h'}, (err, token)=>{
-               console.log(token)
+                console.log(token)
+                response.cookie = token
             })
             response.status(200).send(`User successfully logged in!!`)
         })
