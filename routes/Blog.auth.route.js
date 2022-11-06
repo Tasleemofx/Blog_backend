@@ -39,36 +39,39 @@ router.post("/createblog", async (req, res) => {
     })
    
     blog.save()
-        .then(result => res.status(201).send("Blog successfully created")
+        .then(result => res.status(201).send({message: "Blog successfully created"})
         )
         .catch(err => res.status(406).send(err))
 
 })
 
-// Filter and update a single blog's details
-router.put("/blogs/:id", (req, res) => {
-    const id = req.params.id
-    const update = req.body
-    Blog.findByIdAndUpdate(id, update)
-        .then(result => {
-            const newvalue = { ...result, update }
-            res.json(newvalue)
-        })
-        .catch(err => res.status(500).json(err))
-
-})
 
 // Owner of blog can update blog state from draft to published
 
 router.put("/blog/:id/updatestate", (req, res) => {
-    const updateState = req.body
     const id = req.params.id
     const fullName = ` ${req.user.firstname} ${req.user.lastname}`
-    Blog.findByIdAndUpdate({ author: fullName }, { state: updateState })
-        .then(result => res.status(200).json({ ...result, updateState }))
+    // change to id
+    Blog.findByIdAndUpdate({ author: fullName }, { state: published })
+        .then(result => {
+            if(result.state === "draft"){
+            res.status(200).json({ ...result, state: published })
+            }else{
+                res.status(400).send("Blog state already set to published")
+            }
+        })
         .catch(err => res.status(500).json({ err }))
 })
 
+// Edit blog
+router.patch("/blog/:id/", (req, res) => {
+    const update = req.body
+    const id = req.params.id
+    Blog.findByIdAndUpdate(id, { update})
+        .then(result =>  res.status(200).json({blog: {...result, update},
+        message: "Blog updated successfully" }))
+        .catch(err => res.status(500).json({ err }))
+})
 // Delete blogs
 router.delete("/blog/:blogId", (req, res) => {
     const id = req.params.blogId;

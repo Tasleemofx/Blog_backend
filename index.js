@@ -11,7 +11,7 @@ const PORT = 3000;
 
 app.use("/user",userRoute)
 app.use("/api", blogRoute)
-app.use("/", AuthMiddleware, AuthBlogRoute)
+app.use("/api", AuthMiddleware, AuthBlogRoute)
 
 mongoconnect()
 app.listen(PORT,()=>{

@@ -17,11 +17,10 @@ router.post("/signup",async (req,res)=>{
     }
     else{
         const newuser = { first_name, last_name, email: email.toLowerCase(), password: hashedPassword }
-
         const user = new User({...newuser})
         user.save()
         .then( result=>
-        res.status(201).json("new user successfully created"))
+        res.status(201).json({ message: "new user successfully created", user: newuser}))
         .catch(err=> res.status(500).json(err))
     }
 })
@@ -36,8 +35,12 @@ router.post("/login",async (req,response)=>{
             jwt.sign({ payload: res }, process.env.SECRET, {expiresIn: '1h'}, (err, token)=>{
                 console.log(token)
                 response.cookie = token
+                response.status(200).send({
+                    message: 'Login successful',
+                    token
+                })
             })
-            response.status(200).send(`User successfully logged in!!`)
+            
         })
         .catch(err=>
             response.status(500).send("Failed to login"))

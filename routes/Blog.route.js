@@ -48,6 +48,7 @@ router.get("/blogs/:state", (req, res)=>{
     const filteredByState = response.filter(item=> item.state === state)
     res.status(200).json(filteredByState)
   })
+  .catch(err=> res.status(404))
 })
 
 

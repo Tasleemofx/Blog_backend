@@ -71,16 +71,14 @@ Write tests for all endpoints
 
 ### Signup User
 
-- Route: /signup
+- Route: /user/signup
 - Method: POST
 - Body: 
 ```
-{
-  "email": "doe@example.com",
-  "password": "Password1",
-  "firstname": "jon",
-  "lastname": "doe",
-  "username": 'jon_doe",
+{ first_name: "John",
+  last_name: "Doe",
+  email: "johndoe@gmail.com",
+  password: "***********"
 }
 ```
 
@@ -89,14 +87,12 @@ Write tests for all endpoints
 Success
 ```
 {
-    message: 'Signup successful',
-    user: {
-        "email": "doe@example.com",
-        "password": "Password1",
-        "firstname": "jon",
-        "lastname": "doe",
-        "username": 'jon_doe",
-    }
+    message: 'new user successfully created',
+    user: { first_name: "John",
+  last_name: "Doe",
+  email: "johndoe@gmail.com",
+  password: "***********"
+}
 }
 ```
 ---
@@ -123,17 +119,18 @@ Success
 ```
 
 ---
-### Create Order
+### Create Blog
 
-- Route: /orders
+- Route: /api/createblog
 - Method: POST
 - Header
     - Authorization: Bearer {token}
 - Body: 
 ```
 {
-    items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-}
+        title, description, tags,
+        read_count, reading_time, body
+    }
 ```
 
 - Responses
@@ -141,59 +138,75 @@ Success
 Success
 ```
 {
-    state: 1,
-    total_price: 900,
-    created_at: Mon Oct 31 2022 08:35:00 GMT+0100,
-    items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
+   message: Blog successfully created
 }
 ```
 ---
-### Get Order
 
-- Route: /orders/:id
-- Method: GET
+### Update a Blog's state from draft to published
+
+-Route: /api/blog/:id/updatestate
+-Method: PUT
 - Header
     - Authorization: Bearer {token}
-- Responses
-
-Success
-```
-{
-    state: 1,
-    total_price: 900,
-    created_at: Mon Oct 31 2022 08:35:00 GMT+0100,
-    items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-}
 ```
 ---
+```
+### Delete a single blog
 
-### Get Orders
-
-- Route: /orders
-- Method: GET
-- Header:
+-Route: /api/blog/:blogId
+-Method: DELETE
+-Header
     - Authorization: Bearer {token}
-- Query params: 
-    - page (default: 1)
-    - per_page (default: 10)
-    - order_by (default: created_at)
-    - order (options: asc | desc, default: desc)
-    - state
-    - created_at
+
+
+### Get All Published blogs
+
+- Route: /api/publishedblogs
+- Method: GET
+
+- Responses
+
+Success
+
+### Get a single Published blogs
+
+- Route: /api/publishedblog/:id
+- Method: GET
+
+- Responses
+
+Success
+
+### Get a list of owner's blogs by state
+
+- Route: /api/myblogs/:state
+- Method: GET
+-Header 
+    -Authorization: Bearer {token}
+
+- Responses
+
+Success
+
+### Edit a single Blog
+
+-Route: /api/blog/:id/"
+Method: patch
+-Header 
+    -Authorization: Bearer {token}
 - Responses
 
 Success
 ```
 {
-    state: 1,
-    total_price: 900,
-    created_at: Mon Oct 31 2022 08:35:00 GMT+0100,
-    items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
+    message: 'Blog updated successfully',
 }
 ```
+
 ---
 
-...
+
 
 ## Contributor
 - Oladepo Tesleem
