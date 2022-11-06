@@ -6,8 +6,11 @@ const AuthMiddleware = require("./middleware/Auth")
 const mongoconnect = require("./config/database.js")
 const app = express()
 app.use(express.json({urlencoded: true}))
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
+app.get("/", (req, res) => {
+  res.send("<h1>Welcome to My altschool Blog api</h1>")
+})
 
 app.use("/user",userRoute)
 app.use("/api", blogRoute)
